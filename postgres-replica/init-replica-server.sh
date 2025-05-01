@@ -33,6 +33,13 @@ take_basebackup () {
   echo "Done taking backup of the primary DB.."
   echo "NEW Contents of PGDATA folder: "
   ls -l ${PGDATA}
+  
+  # Add trigger file configuration
+  echo "Setting up trigger file configuration..."
+  echo "promote_trigger_file = '/tmp/promote_me_to_master'" >> ${PGDATA}/postgresql.conf
+  
+  # Fix permissions
+  chown -R postgres:postgres ${PGDATA}
 }
 # write_trigger_file_to () {
 #   file_path=$1

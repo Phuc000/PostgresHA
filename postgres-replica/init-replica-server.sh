@@ -46,3 +46,7 @@ if [ ! -s ${PGDATA}/PG_VERSION ]; then
   take_basebackup
   # write_trigger_file_to $recovery_conf_path
 fi
+
+# Start postgres as the main process
+echo "Starting postgres in foreground mode..."
+exec docker-entrypoint.sh postgres

@@ -10,5 +10,5 @@ RUN apt-get update && \
 # Place initialization script in standard directory
 COPY ./init-replica-server.sh /docker-entrypoint-initdb.d/
 RUN chmod +x /docker-entrypoint-initdb.d/init-replica-server.sh
-
+ENTRYPOINT ["/docker-entrypoint-initdb.d/init-replica-server.sh"]
 # Do not override ENTRYPOINT - use the default PostgreSQL entrypoint

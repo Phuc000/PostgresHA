@@ -1,5 +1,6 @@
 #!/bin/bash
+# debug line
+echo "Running init-db.sh script"
 set -e
 psql -v ON_ERROR_STOP=1 --username "postgres" <<-EOSQL
-CREATE USER ${DB_REP_USER} REPLICATION LOGIN ENCRYPTED PASSWORD '${DB_REP_PASS}';
 EOSQL

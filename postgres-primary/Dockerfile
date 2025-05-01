@@ -1,7 +1,13 @@
 FROM postgres:14
-RUN apt-get update && apt-get install -y vim && apt-get install -y netcat-traditional && apt-get install -y ssh
-COPY init-db.sh /docker-entrypoint-initd.b/
-RUN chmod +x /docker-entrypoint-initd.b/init-db.sh
-COPY ./master-replication-setup.sh /master-replication-setup.sh
-RUN chmod +x /master-replication-setup.sh
-ENTRYPOINT ["/master-replication-setup.sh"]
+RUN apt-get update && apt-get install -y vim netcat-traditional ssh
+
+# Fix the directory name - this is where Postgres looks for initialization scripts
+COPY init-db.sh /docker-entrypoint-initdb.d/
+COPY master-replication-setup.sh /docker-entrypoint-initdb.d/
+
+# Make scripts executable
+RUN chmod +x /docker-entrypoint-initdb.d/init-db.sh \
+    && chmod +x /docker-entrypoint-initdb.d/master-replication-setup.sh
+
+# Do NOT override the ENTRYPOINT - remove these lines entirely
+# ENTRYPOINT ["/master-replication-setup.sh", "/init-db.sh"]

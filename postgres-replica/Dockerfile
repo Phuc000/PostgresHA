@@ -1,5 +1,14 @@
 FROM postgres:14
-RUN apt-get update && apt-get install -y vim && apt-get install -y netcat-traditional
-COPY ./init-replica-server.sh /init-replica-server.sh
-RUN chmod +x /init-replica-server.sh
-ENTRYPOINT ["/init-replica-server.sh"]
+
+# Install required packages efficiently
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    vim \
+    netcat-traditional && \
+    rm -rf /var/lib/apt/lists/*
+
+# Place initialization script in standard directory
+COPY ./init-replica-server.sh /docker-entrypoint-initdb.d/
+RUN chmod +x /docker-entrypoint-initdb.d/init-replica-server.sh
+
+# Do not override ENTRYPOINT - use the default PostgreSQL entrypoint

@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+echo "Running master-replication-setup.sh script"
 
 # Wait for PGDATA directory to exist
 while [ ! -d "${PGDATA}" ]; do
@@ -13,10 +14,10 @@ EOF
 
 cat >> "${PGDATA}/postgresql.conf" << EOF
 wal_level = replica
-wal_keep_segments = 64
+wal_keep_size = 1GB
 max_wal_senders = 10
 hot_standby = on
 EOF
 
-# Start postgres as the main process
-exec docker-entrypoint.sh postgres
+# # Start postgres as the main process
+# exec docker-entrypoint.sh postgres

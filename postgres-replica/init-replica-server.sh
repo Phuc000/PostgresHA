@@ -26,7 +26,7 @@ take_basebackup () {
   echo "Contents of PGDATA folder: "
   ls -l ${PGDATA}
   echo "Taking basebackup of the primary DB .."
-  export PGPASSWORD=${PRIMARY_DB_REP_USER_PASS}
+  export PGPASSWORD=${PRIMARY_DB_REP_PASS}
   pg_basebackup -h ${PRIMARY_DB_HOST} -p ${PRIMARY_DB_PORT} -U ${PRIMARY_DB_REP_USER} -D ${PGDATA} -c fast -X stream -R -w -P
   unset PGPASSWORD
   
@@ -34,15 +34,15 @@ take_basebackup () {
   echo "NEW Contents of PGDATA folder: "
   ls -l ${PGDATA}
 }
-write_trigger_file_to () {
-  file_path=$1
-  echo "trigger_file = '/tmp/promote_me_to_master' " >> $file_path
-}
-recovery_file="recovery.conf"
-recovery_conf_path=${PGDATA}/${recovery_file}
-if [ ! -s $recovery_conf_path ]; then
+# write_trigger_file_to () {
+#   file_path=$1
+#   echo "trigger_file = '/tmp/promote_me_to_master' " >> $file_path
+# }
+# recovery_file="recovery.conf"
+# recovery_conf_path=${PGDATA}/${recovery_file}
+if [ ! -s ${PGDATA}/PG_VERSION ]; then
   set_correct_folder_permission
   wait_for_master
   take_basebackup
-  write_trigger_file_to $recovery_conf_path
+  # write_trigger_file_to $recovery_conf_path
 fi

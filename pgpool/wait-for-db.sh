@@ -23,3 +23,7 @@ for str in ${db_host_names[*]}; do
   echo "** $str host is online, trying remaining hosts ***"
 done
 echo "* All the required DB hosts are online *"
+
+# Start pgpool in foreground mode
+echo "Starting PgPool-II in foreground mode..."
+exec pgpool -n

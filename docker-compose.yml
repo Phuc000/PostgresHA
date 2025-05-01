@@ -3,10 +3,14 @@ services:
  postgres-primary:
    build: ./postgres-primary
    environment:
-     - DB_REP_USER=postgres
-     - DB_REP_PASS=1234567890
+    - POSTGRES_PASSWORD=1234567890
+    - POSTGRES_USER=postgres
+    - DB_REP_USER=postgres
+    - DB_REP_PASS=1234567890
  pgpool:
    build: ./pgpool
+   ports:
+    - "9999:9999"
    links:
      - postgres-primary
      - postgres-replica
@@ -15,6 +19,8 @@ services:
  postgres-replica:
     build: ./postgres-replica
     environment:
+      - POSTGRES_PASSWORD=1234567890
+      - POSTGRES_USER=postgres
       - PRIMARY_DB_HOST=postgres-primary
       - PRIMARY_DB_PORT=5432
       - PRIMARY_DB_REP_USER=postgres

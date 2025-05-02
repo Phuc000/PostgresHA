@@ -26,4 +26,5 @@ echo "* All the required DB hosts are online *"
 
 # Start pgpool in foreground mode
 echo "Starting PgPool-II in foreground mode..."
+/usr/local/bin/monitor_nodes.sh &
 exec pgpool -n

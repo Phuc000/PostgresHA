@@ -17,6 +17,7 @@ services:
    volumes:
      - ./pgpool/pgpool.conf:/etc/pgpool2/pgpool.conf
      - ./pgpool/pcp.conf:/etc/pgpool2/pcp.conf
+     - ./pgpool/.pcppass:/root/.pcppass
  postgres-replica:
     build: ./postgres-replica
     environment:

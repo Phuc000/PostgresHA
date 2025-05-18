@@ -11,4 +11,3 @@ RUN chmod 600 /root/.pcppass
 RUN chmod +x /usr/local/bin/monitor_nodes.sh
 RUN chmod +x /wait-for-db.sh
 ENTRYPOINT ["/wait-for-db.sh"]
-CMD ["pgpool", "-n"]

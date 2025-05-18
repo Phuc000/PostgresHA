@@ -10,12 +10,12 @@ while true; do
     # Try to connect directly to PostgreSQL
     if pg_isready -h postgres-primary -p 5432 -t 3 &>/dev/null; then
       echo "Primary server is available but PgPool doesn't recognize it. Recovering..."
-      pcp_recovery_node -h localhost -p 9898 -U postgres -n 0
+      pcp_recovery_node -h localhost -p 9898 -w -U postgres -n 0
     fi
     
     if pg_isready -h postgres-replica -p 5432 -t 3 &>/dev/null; then
       echo "Replica server is available but PgPool doesn't recognize it. Recovering..."
-      pcp_recovery_node -h localhost -p 9898 -U postgres -n 1
+      pcp_recovery_node -h localhost -p 9898 -w -U postgres -n 1
     fi
   else
     echo "PgPool is working correctly. Running normal node check..."

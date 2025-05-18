@@ -1,6 +1,32 @@
 #!/bin/bash
 # This line is to tell the interpreter to error out and quit further execution if any step fails
 set -e
+
+echo "Performing EXTREME PgPool cleanup..."
+
+# Kill any running pgpool processes more aggressively
+pkill -9 pgpool || true
+sleep 1
+
+# Use find to locate and remove any PID files
+find / -name "pgpool.pid" -delete 2>/dev/null || true
+find / -name "*.socket" -delete 2>/dev/null || true
+find /tmp -name ".s.PGSQL*" -delete 2>/dev/null || true
+find /var/run -name ".s.PGSQL*" -delete 2>/dev/null || true
+
+# Remove known locations explicitly
+rm -rf /var/run/pgpool
+rm -rf /tmp/.s.PGSQL*
+rm -rf /var/run/postgresql/.s.PGSQL*
+rm -f /etc/pgpool2/pgpool.pid
+
+# Recreate with proper permissions
+mkdir -p /var/run/pgpool
+mkdir -p /var/log/postgresql
+chmod -R 777 /var/run/pgpool
+
+echo "Extreme cleanup completed"
+
 check_retry_count () {
   RETRY_COUNT=$1
   MAX_RETRY=10
